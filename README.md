@@ -20,5 +20,8 @@
     
 ![image](https://github.com/user-attachments/assets/014f0bdd-246a-459f-b2da-99d5f0211c5c)
 
+
+<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fflysparrow%2FMMU_iOS_widget&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
+
     
     
