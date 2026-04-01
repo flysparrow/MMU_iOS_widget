@@ -1,11 +1,19 @@
 // 오늘 날짜 가져오기
 const today = new Date();
-const todayDate = `${String(today.getMonth() + 1).padStart(2, '0')}/${today.getDate()}`;
+const todayMonth = today.getMonth() + 1;
+const todayDay = today.getDate();
+
+// '4/1', '04/01', '04/1' 등 0이 있든 없든 모두 매칭되도록 정규식 패턴 생성
+const todayDateStr = `0?${todayMonth}/0?${todayDay}`;
 
 // 내일 날짜 계산 (안전한 방식)
 const tomorrow = new Date(today);
 tomorrow.setDate(today.getDate() + 1);
-const tomorrowDate = `${String(tomorrow.getMonth() + 1).padStart(2, '0')}/${tomorrow.getDate()}`;
+const tomorrowMonth = tomorrow.getMonth() + 1;
+const tomorrowDay = tomorrow.getDate();
+
+// 내일 날짜 정규식 패턴 생성
+const tomorrowDateStr = `0?${tomorrowMonth}/0?${tomorrowDay}`;
 
 // URL 설정
 const url = "https://www.mmu.ac.kr/main/contents/todayMenu2";
@@ -24,16 +32,16 @@ if (!tableMatch) {
 
 let tbody = tableMatch[1];
 
-// 오늘 날짜 데이터 추출
+// 오늘 날짜 데이터 추출 (todayDate 대신 todayDateStr 사용)
 let rowRegexToday = new RegExp(
-    `<tr>\\s*<td[^>]*>.*?${todayDate}.*?<\\/td>([\\s\\S]*?)<\\/tr>`,
+    `<tr>\\s*<td[^>]*>.*?${todayDateStr}.*?<\\/td>([\\s\\S]*?)<\\/tr>`,
     "i"
 );
 let rowToday = tbody.match(rowRegexToday);
 
-// 내일 날짜 데이터 추출
+// 내일 날짜 데이터 추출 (tomorrowDate 대신 tomorrowDateStr 사용)
 let rowRegexTomorrow = new RegExp(
-    `<tr>\\s*<td[^>]*>.*?${tomorrowDate}.*?<\\/td>([\\s\\S]*?)<\\/tr>`,
+    `<tr>\\s*<td[^>]*>.*?${tomorrowDateStr}.*?<\\/td>([\\s\\S]*?)<\\/tr>`,
     "i"
 );
 let rowTomorrow = tbody.match(rowRegexTomorrow);
@@ -83,7 +91,8 @@ if (currentTime >= 0 && currentTime <= 510) { // 00:00 ~ 08:30
     selectedMenu = todayMenus[2]; // 오늘 석식
     titleText = `오늘의 석식 🌆`;
 } else { // 18:31 ~ 23:59 (다음 날의 조식)
-    selectedMenu = tomorrowMenus[0]; // 내일 조식
+    // 내일 메뉴가 없을 경우를 대비한 안전 장치(Fallback)
+    selectedMenu = tomorrowMenus.length > 0 ? tomorrowMenus[0] : "아직 식단이 안 올라왔어 😅";
     titleText = `내일의 조식 🌅`;
 }
 
